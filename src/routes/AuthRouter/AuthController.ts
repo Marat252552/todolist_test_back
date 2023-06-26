@@ -31,7 +31,7 @@ class Controller {
             if (!user) return res.sendStatus(500)
 
             let { _id } = user
-            let { AccessToken, RefreshToken } = generateTokens({ login})
+            let { AccessToken, RefreshToken } = generateTokens({ login, user_id: user._id.toString()})
 
             let jsonResponse = {
                 user: {
@@ -65,7 +65,7 @@ class Controller {
             if (!isPasswordValid) return res.status(400).json({ message: 'Пароль неверный' })
 
             let { _id } = user
-            let { AccessToken, RefreshToken } = generateTokens({ login })
+            let { AccessToken, RefreshToken } = generateTokens({ login, user_id: user._id.toString() })
 
             let jsonResponse = {
                 user: {
@@ -100,7 +100,7 @@ class Controller {
 
             let decryptedToken = jwt.verify(OldRefreshToken, process.env.JWT_REFRESH_KEY!) as TokenPayload_T
             if (!decryptedToken) return res.sendStatus(400)
-            let { login } = decryptedToken
+            let { login, user_id } = decryptedToken
 
             let DoesUserExist = await UserModel.exists({ login })
             if (!DoesUserExist) {
@@ -108,7 +108,7 @@ class Controller {
                 return
             }
 
-            let { AccessToken, RefreshToken } = generateTokens({ login })
+            let { AccessToken, RefreshToken } = generateTokens({ login, user_id })
             let jsonResponse = {
                 user: { login },
                 AccessToken

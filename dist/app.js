@@ -10,6 +10,7 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const GetAuthRouter_1 = __importDefault(require("./routes/AuthRouter/GetAuthRouter"));
+const GetCardsRouter_1 = __importDefault(require("./routes/CardsRouter/GetCardsRouter"));
 dotenv_1.default.config();
 exports.app = (0, express_1.default)();
 let jsonBodyMiddleware = express_1.default.json();
@@ -23,4 +24,6 @@ exports.app.use(body_parser_1.default.urlencoded({
 }));
 exports.app.use(jsonBodyMiddleware);
 const AuthRouter = (0, GetAuthRouter_1.default)();
+const CardsRouter = (0, GetCardsRouter_1.default)();
 exports.app.use('/auth', AuthRouter);
+exports.app.use('/cards', CardsRouter);

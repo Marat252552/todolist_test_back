@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser'
 import cors from "cors";
 import dotenv from 'dotenv'
 import GetAuthRouter from './routes/AuthRouter/GetAuthRouter';
+import GetCardsRouter from './routes/CardsRouter/GetCardsRouter';
 dotenv.config()
 
 export const app = express()
@@ -21,5 +22,7 @@ app.use(jsonBodyMiddleware)
 
 
 const AuthRouter = GetAuthRouter()
+const CardsRouter = GetCardsRouter()
 
 app.use('/auth', AuthRouter)
+app.use('/cards', CardsRouter)

@@ -38,7 +38,7 @@ class Controller {
                 if (!user)
                     return res.sendStatus(500);
                 let { _id } = user;
-                let { AccessToken, RefreshToken } = generateTokens({ login });
+                let { AccessToken, RefreshToken } = generateTokens({ login, user_id: user._id.toString() });
                 let jsonResponse = {
                     user: {
                         user_id: _id,
@@ -74,7 +74,7 @@ class Controller {
                 if (!isPasswordValid)
                     return res.status(400).json({ message: 'Пароль неверный' });
                 let { _id } = user;
-                let { AccessToken, RefreshToken } = generateTokens({ login });
+                let { AccessToken, RefreshToken } = generateTokens({ login, user_id: user._id.toString() });
                 let jsonResponse = {
                     user: {
                         user_id: _id,
@@ -112,13 +112,13 @@ class Controller {
                 let decryptedToken = jsonwebtoken_1.default.verify(OldRefreshToken, process.env.JWT_REFRESH_KEY);
                 if (!decryptedToken)
                     return res.sendStatus(400);
-                let { login } = decryptedToken;
+                let { login, user_id } = decryptedToken;
                 let DoesUserExist = yield UserModel_1.default.exists({ login });
                 if (!DoesUserExist) {
                     res.status(400).json({ message: 'Пользователя с таким логином нет' });
                     return;
                 }
-                let { AccessToken, RefreshToken } = generateTokens({ login });
+                let { AccessToken, RefreshToken } = generateTokens({ login, user_id });
                 let jsonResponse = {
                     user: { login },
                     AccessToken
