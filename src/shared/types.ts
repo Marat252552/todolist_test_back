@@ -1,4 +1,4 @@
 export type TokenPayload_T = {
-    login: string,
+    email: string,
     user_id: string
 }

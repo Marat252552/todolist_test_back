@@ -1,6 +1,8 @@
+import { Request } from "express"
+
 export type SigninReq_T = {
     body: {
-        login: string,
+        email: string,
         password: string,
         remember?: boolean
     }
@@ -8,11 +10,15 @@ export type SigninReq_T = {
 
 export type LoginReq_T = {
     body: {
-        login: string,
+        email: string,
         password: string,
         remember?: boolean
     }
 }
+
+export type activateReq_T = Request<{
+    key: string
+}, void, void>
 
 export type RefreshReq_T = {
     cookies: {
@@ -25,3 +31,12 @@ export type isLoggedReq_T = {
         authorization: string
     }
 }
+
+export type sendRestoreLinkReq_T = Request<void, void, {
+    email: string
+}>
+
+export type setNewPasswordReq_T = Request<void, void, {
+    key: string,
+    password: string
+}>

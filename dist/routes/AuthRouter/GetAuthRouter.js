@@ -12,6 +12,9 @@ const GetAuthRouter = () => {
     router.delete('/login', AuthController_1.default.logout);
     router.get('/refresh', AuthController_1.default.refresh);
     router.get('/logged', AuthController_1.default.isLogged);
+    router.get('/activate/:key', AuthController_1.default.activate);
+    router.post('/restore', AuthController_1.default.sendRestoreLink);
+    router.post('/set_new_password', AuthController_1.default.setNewPassword);
     return router;
 };
 exports.default = GetAuthRouter;
