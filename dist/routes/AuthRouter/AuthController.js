@@ -174,10 +174,12 @@ class Controller {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { key } = req.params;
-                console.log(key);
+                const DoesLinkExist = yield ActivationLinkModel_1.default.exists({ key });
+                if (!DoesLinkExist)
+                    return res.status(400).send('Недействительная ссылка');
                 const result = yield ActivationLinkModel_1.default.deleteOne({ key });
-                // console.log(result)
-                res.sendStatus(200);
+                console.log(result);
+                res.status(200).send('Почта успешно подтверждена');
             }
             catch (e) {
                 console.log(e);

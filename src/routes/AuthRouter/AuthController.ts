@@ -163,10 +163,12 @@ class Controller {
     async activate(req: activateReq_T, res: any) {
         try {
             const { key } = req.params
-            console.log(key)
+            
+            const DoesLinkExist = await ActivationLinkModel.exists({key})
+            if(!DoesLinkExist) return res.status(400).send('Недействительная ссылка')
             const result = await ActivationLinkModel.deleteOne({ key })
-            // console.log(result)
-            res.sendStatus(200)
+            console.log(result)
+            res.status(200).send('Почта успешно подтверждена')
         } catch (e) {
             console.log(e)
             res.sendStatus(500)
