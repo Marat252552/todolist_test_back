@@ -25,6 +25,10 @@ class Controller {
             let { email, password } = req.body
             if (!email || !password) return res.status(400).json({ message: 'Заполнены не все поля' })
 
+            if(email.length <= 6 || password.length <= 6) return res.status(400).json({message: 'Минимальное количество символов пароля и почты 6'})
+
+            if(email.length >= 50 || password.length >= 50) return res.status(400).json({message: 'Максимальное количество символов пароля и почты 50'})
+
             email = email.toLowerCase()
 
             let isLoginTaken = await UserModel.exists({ email })
