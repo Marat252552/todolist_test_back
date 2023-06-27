@@ -192,7 +192,7 @@ class Controller {
                 if (AlreadyExistingLink && AlreadyExistingLink.expiresIn > new Date())
                     return res.status(400).json({ message: 'Ссылка уже отправлена. Создание новой возможно не ранее чем через 30 минут' });
                 const key = (0, uuid_1.v4)();
-                const RestoreLink = process.env.FRONT_URL + '/new_password/' + key;
+                const RestoreLink = process.env.FRONT_URL + '/#/new_password/' + key;
                 yield RestoreLinkModel_1.default.create({ email, key });
                 (0, MailService_1.sendRestoreLink)(email, RestoreLink);
                 res.status(200).json({ message: 'Ссылка на восстановление пароля отправлена на указанную почту' });
@@ -213,6 +213,12 @@ class Controller {
                 if (!RestoreLink)
                     return res.status(400).json({ message: 'Ссылка на восстановление пароля не найдена' });
                 const { email } = RestoreLink;
+                const user = yield UserModel_1.default.findOne({ email });
+                if (!user)
+                    return res.status(400).json({ message: 'Пользователь не найден' });
+                const ArePasswordsEqual = (0, bcrypt_1.compareSync)(password, user.password);
+                if (ArePasswordsEqual)
+                    return res.status(400).json({ message: 'Новый пароль должен отличаться от предыдущего' });
                 const hashedPassword = (0, bcrypt_1.hashSync)(password, 7);
                 yield UserModel_1.default.updateOne({ email }, { password: hashedPassword });
                 yield RestoreLinkModel_1.default.deleteOne({ key });

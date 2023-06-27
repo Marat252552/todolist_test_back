@@ -177,7 +177,7 @@ class Controller {
 
 
             const key = v4()
-            const RestoreLink = process.env.FRONT_URL + '/new_password/' + key
+            const RestoreLink = process.env.FRONT_URL + '/#/new_password/' + key
             await RestoreLinkModel.create({ email, key })
 
             sendRestoreLink(email, RestoreLink)
@@ -196,6 +196,13 @@ class Controller {
             const RestoreLink = await RestoreLinkModel.findOne({key})
             if(!RestoreLink) return res.status(400).json({message: 'Ссылка на восстановление пароля не найдена'})
             const {email} = RestoreLink
+
+            const user = await UserModel.findOne({email})
+            if(!user) return res.status(400).json({message: 'Пользователь не найден'})
+
+            const ArePasswordsEqual = compareSync(password, user.password)
+            if(ArePasswordsEqual) return res.status(400).json({message: 'Новый пароль должен отличаться от предыдущего'})
+
             const hashedPassword = hashSync(password, 7)
             
             await UserModel.updateOne({email}, {password: hashedPassword})
