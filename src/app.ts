@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from 'dotenv'
 import GetAuthRouter from './routes/AuthRouter/GetAuthRouter';
 import GetCardsRouter from './routes/CardsRouter/GetCardsRouter';
+import cookieSession from 'cookie-session';
 dotenv.config()
 
 export const app = express()
@@ -12,15 +13,22 @@ export const app = express()
 let jsonBodyMiddleware = express.json()
 app.use(cors({
     origin: process.env.FRONT_URL,
-    credentials: true,
-    
+    credentials: true
 }))
+app.use(
+    cookieSession({
+        secret: 'gvdfgbvsreghbtrsfhb',
+        sameSite: 'none',
+        secure: true,
+        httpOnly: true,
+    }),
+);
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(jsonBodyMiddleware)
-app.set('trust proxy', 1);
+app.enable('trust proxy');
 
 
 const AuthRouter = GetAuthRouter()
