@@ -16,13 +16,14 @@ exports.app = (0, express_1.default)();
 let jsonBodyMiddleware = express_1.default.json();
 exports.app.use((0, cors_1.default)({
     origin: process.env.FRONT_URL,
-    credentials: true
+    credentials: true,
 }));
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use(body_parser_1.default.urlencoded({
     extended: true
 }));
 exports.app.use(jsonBodyMiddleware);
+exports.app.set('trust proxy', 1);
 const AuthRouter = (0, GetAuthRouter_1.default)();
 const CardsRouter = (0, GetCardsRouter_1.default)();
 exports.app.use('/auth', AuthRouter);

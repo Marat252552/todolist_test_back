@@ -12,13 +12,15 @@ export const app = express()
 let jsonBodyMiddleware = express.json()
 app.use(cors({
     origin: process.env.FRONT_URL,
-    credentials: true
+    credentials: true,
+    
 }))
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(jsonBodyMiddleware)
+app.set('trust proxy', 1);
 
 
 const AuthRouter = GetAuthRouter()
