@@ -33,6 +33,7 @@ class Controller {
                 let { email, password } = req.body;
                 if (!email || !password)
                     return res.status(400).json({ message: 'Заполнены не все поля' });
+                email = email.toLowerCase();
                 let isLoginTaken = yield UserModel_1.default.exists({ email });
                 if (isLoginTaken)
                     return res.status(400).json({ message: 'Логин уже занят' });
@@ -59,6 +60,7 @@ class Controller {
                 let { email, password, remember = true } = req.body;
                 if (!email || !password)
                     return res.sendStatus(400);
+                email = email.toLowerCase();
                 let user = yield UserModel_1.default.findOne({ email });
                 if (!user)
                     return res.status(400).json({ message: 'Пользователя с таким логином нет' });

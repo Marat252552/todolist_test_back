@@ -25,11 +25,12 @@ class Controller {
             let { email, password } = req.body
             if (!email || !password) return res.status(400).json({ message: 'Заполнены не все поля' })
 
+            email = email.toLowerCase()
+
             let isLoginTaken = await UserModel.exists({ email })
             if (isLoginTaken) return res.status(400).json({ message: 'Логин уже занят' })
 
             let hashedPassword = hashSync(password, 7)
-
             let user = await UserModel.create({ email, password: hashedPassword })
             if (!user) return res.sendStatus(500)
 
@@ -52,8 +53,11 @@ class Controller {
             let { email, password, remember = true } = req.body
             if (!email || !password) return res.sendStatus(400)
 
+            email = email.toLowerCase()
+
             let user = await UserModel.findOne({ email })
             if (!user) return res.status(400).json({ message: 'Пользователя с таким логином нет' })
+            
             let isPasswordValid = compareSync(password, user.password)
             if (!isPasswordValid) return res.status(400).json({ message: 'Пароль неверный' })
 
