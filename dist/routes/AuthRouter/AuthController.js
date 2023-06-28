@@ -33,9 +33,9 @@ class Controller {
                 let { email, password } = req.body;
                 if (!email || !password)
                     return res.status(400).json({ message: 'Заполнены не все поля' });
-                if (email.length <= 6 || password.length <= 6)
+                if (email.length < 6 || password.length < 6)
                     return res.status(400).json({ message: 'Минимальное количество символов пароля и почты 6' });
-                if (email.length >= 50 || password.length >= 50)
+                if (email.length > 50 || password.length > 50)
                     return res.status(400).json({ message: 'Максимальное количество символов пароля и почты 50' });
                 email = email.toLowerCase();
                 let isLoginTaken = yield UserModel_1.default.exists({ email });
@@ -218,6 +218,8 @@ class Controller {
                 const { key, password } = req.body;
                 if (!key || !password)
                     return res.status(400).json({ message: 'Заполнены не все поля' });
+                if (password.length < 6 || password.length > 50)
+                    return res.status(400).json({ message: 'Максимум 50 символов, минимум - 6' });
                 const RestoreLink = yield RestoreLinkModel_1.default.findOne({ key });
                 if (!RestoreLink)
                     return res.status(400).json({ message: 'Ссылка на восстановление пароля не найдена' });
