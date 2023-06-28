@@ -126,7 +126,8 @@ class Controller {
     }
     async logout(req: any, res: any) {
         try {
-            res.clearCookie('refresh_token').status(200).end()
+            // res.clearCookie('refresh_token').status(200).end()
+            res.cookie('refresh_token', '', { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'None', secure: true }).status(200).end()
         } catch (e) {
             console.log(e)
             res.sendStatus(500)
