@@ -176,9 +176,10 @@ class Controller {
     }
     async sendRestoreLink(req: sendRestoreLinkReq_T, res: any) {
         try {
-            const { email } = req.body
+            let { email } = req.body
             if (!email) return res.sendStatus(400).json({ message: 'Почта не указана' })
 
+            email = email.toLowerCase()
             const DoesUserExist = await UserModel.exists({ email })
             if (!DoesUserExist) return res.status(400).json({ message: 'Пользователь с указанной почтой не найден' })
 

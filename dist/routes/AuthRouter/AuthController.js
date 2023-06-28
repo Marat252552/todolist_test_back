@@ -190,9 +190,10 @@ class Controller {
     sendRestoreLink(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { email } = req.body;
+                let { email } = req.body;
                 if (!email)
                     return res.sendStatus(400).json({ message: 'Почта не указана' });
+                email = email.toLowerCase();
                 const DoesUserExist = yield UserModel_1.default.exists({ email });
                 if (!DoesUserExist)
                     return res.status(400).json({ message: 'Пользователь с указанной почтой не найден' });
