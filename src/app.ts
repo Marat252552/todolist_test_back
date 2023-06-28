@@ -18,7 +18,6 @@ app.use(cors({
 app.use(
     cookieSession({
         secret: 'gvdfgbvsreghbtrsfhb',
-        domain: 'front.marat252552.com',
         sameSite: 'none',
         secure: true,
         httpOnly: true,
